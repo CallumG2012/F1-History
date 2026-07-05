@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1950–2026 · Seventy-Six Seasons at the Limit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --asphalt:#15171b;
+    --asphalt-2:#1c1f24;
+    --graphite:#25282f;
+    --line: rgba(241,238,230,0.12);
+    --paper:#f1eee6;
+    --paper-dim: rgba(241,238,230,0.62);
+    --accent:#6FA98B;
+    --accent-2:#C7C9CC;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--asphalt);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent); color:#0c0d0f; }
+
+  h1,h2,h3, .display{
+    font-family:'Big Shoulders Display', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    margin:0;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  a{ color:inherit; }
+
+  /* ---------- fixed livery/progress strip ---------- */
+  #livery-bar{
+    position:fixed; top:0; left:0; right:0; height:5px; z-index:100;
+    background:var(--line);
+  }
+  #livery-fill{
+    height:100%; width:0%;
+    background:var(--accent);
+    transition: background-color .5s ease, width .08s linear;
+  }
+  #era-tag{
+    position:fixed; top:14px; right:16px; z-index:100;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.12em;
+    color:var(--asphalt);
+    background:var(--accent);
+    padding:5px 10px 4px;
+    border-radius:2px;
+    transition: background-color .5s ease;
+    opacity:0.95;
+  }
+  @media (max-width: 640px){ #era-tag{ display:none; } }
+
+  section{ position:relative; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100svh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding: 96px 6vw 64px;
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(111,169,139,0.16), transparent 60%),
+      var(--asphalt);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.22em; color:var(--paper-dim);
+    margin-bottom:22px;
+  }
+  .eyebrow::before{ content:"● "; color:var(--accent); }
+  .hero h1{
+    font-size: clamp(3rem, 11vw, 8.5rem);
+    font-weight:900;
+    line-height:0.88;
+    color:var(--paper);
+  }
+  .hero h1 span{ color:var(--accent); display:block; }
+  .hero-sub{
+    max-width:640px; margin-top:28px;
+    font-size:1.05rem; color:var(--paper-dim);
+  }
+  .ticker{
+    display:flex; flex-wrap:wrap; gap:0;
+    margin-top:56px;
+    border-top:1px solid var(--line);
+  }
+  .ticker-item{
+    flex:1 1 160px;
+    padding:18px 20px 0 0;
+    border-right:1px solid var(--line);
+  }
+  .ticker-item:last-child{ border-right:none; }
+  .ticker-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(1.6rem,3.2vw,2.3rem);
+    font-weight:700; color:var(--accent);
+    display:block;
+  }
+  .ticker-label{
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--paper-dim); margin-top:4px; display:block;
+  }
+
+  /* ---------- decade sections ---------- */
+  .era{
+    padding: 80px 6vw;
+    border-bottom:1px solid var(--line);
+    background:var(--asphalt);
+    opacity:0; transform: translateY(28px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .era.in-view{ opacity:1; transform:none; }
+  .era-inner{ max-width: 980px; margin:0 auto; }
+  .era-head{
+    display:flex; align-items:baseline; gap:22px; flex-wrap:wrap;
+    border-left:4px solid var(--accent);
+    padding-left:20px; margin-bottom:28px;
+  }
+  .era-range{
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(2.2rem,6vw,3.6rem);
+    font-weight:700; color:var(--accent);
+    line-height:1;
+  }
+  .era-head h2{
+    font-size:clamp(1.5rem,3.4vw,2.5rem);
+    font-weight:800; color:var(--paper);
+    line-height:1.05;
+  }
+  .era-body{ display:grid; grid-template-columns: 1.6fr 1fr; gap:40px; }
+  @media (max-width:760px){ .era-body{ grid-template-columns:1fr; } }
+  .era-facts{ list-style:none; margin:0; padding:0; }
+  .era-facts li{
+    position:relative; padding:0 0 20px 26px;
+    font-size:1rem; color: #d8d5cc;
+    border-bottom:1px solid var(--line);
+    margin-bottom:20px;
+  }
+  .era-facts li:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .era-facts li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent); font-weight:700;
+  }
+  .stat-block{
+    background:var(--graphite);
+    border:1px solid var(--line);
+    border-top:3px solid var(--accent);
+    padding:22px 20px;
+    align-self:start;
+  }
+  .stat-block .k{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.1em; color:var(--paper-dim);
+    text-transform:uppercase;
+  }
+  .stat-block .v{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800; font-size:clamp(1.4rem,3vw,1.9rem);
+    color:var(--paper); margin-top:8px; line-height:1.08;
+  }
+
+  /* ---------- records ---------- */
+  .records{ padding:90px 6vw 100px; background:var(--asphalt-2); border-bottom:1px solid var(--line); }
+  .records-inner{ max-width:1100px; margin:0 auto; }
+  .records h2{
+    font-size:clamp(2rem,5vw,3rem); font-weight:900; margin-bottom:8px;
+  }
+  .records .lede{ color:var(--paper-dim); max-width:560px; margin-bottom:46px; }
+  .record-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:1px; background:var(--line); border:1px solid var(--line);
+  }
+  .record-card{
+    background:var(--asphalt-2); padding:26px 22px; min-height:150px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .record-card .label{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--paper-dim);
+  }
+  .record-card .val{
+    font-family:'Big Shoulders Display', sans-serif; font-weight:800;
+    font-size:1.4rem; margin-top:14px; color:var(--paper); line-height:1.1;
+  }
+  .record-card .val em{ color:#f2c14e; font-style:normal; }
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:48px 6vw 60px; text-align:left;
+    color:var(--paper-dim); font-size:13px;
+  }
+  footer .fline{ border-top:1px solid var(--line); padding-top:22px; max-width:760px; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .era{ transition:none; opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="livery-bar"><div id="livery-fill"></div></div>
+<div id="era-tag" class="mono">1950–59</div>
+
+<section class="hero">
+  <div class="eyebrow">FORMULA 1 · WORLD CHAMPIONSHIP, 1950–2026</div>
+  <h1>SEVENTY-SIX<br>SEASONS<br><span>AT THE LIMIT</span></h1>
+  <p class="hero-sub">From front-engined Alfas at Silverstone to fifty-fifty electric hybrid power and an eleven-team grid — the championship's story, decade by decade, told through the liveries that defined each one.</p>
+  <div class="ticker">
+    <div class="ticker-item"><span class="ticker-num">76</span><span class="ticker-label">Seasons contested</span></div>
+    <div class="ticker-item"><span class="ticker-num">35</span><span class="ticker-label">Different world champions</span></div>
+    <div class="ticker-item"><span class="ticker-num">1,100+</span><span class="ticker-label">Grands Prix run</span></div>
+    <div class="ticker-item"><span class="ticker-num">11</span><span class="ticker-label">Teams on the 2026 grid</span></div>
+  </div>
+</section>
+
+<section class="era" data-accent="#6FA98B" data-tag="1950–59">
+  <div class="era-inner">
+    <div class="era-head">
+      <div class="era-range">50s</div>
+      <h2>The Front-Engine Years</h2>
+    </div>
+    <div class="era-body">
+      <ul class="era-facts">
+        <li>The first World Championship race was held at Silverstone on 13 May 1950; Giuseppe Farina won it for Alfa Romeo.</li>
+        <li>Juan Manuel Fangio won five titles in the decade — 1951 and then four in a row, 1954 to 1957 — across three different constructors, a versatility no champion has matched since.</li>
+        <li>Cars were front-engined and drivers raced without seatbelts or fireproof suits. A Grand Prix was as much a test of endurance as of speed.</li>
+      </ul>
+      <div class="stat-block">
+        <div class="k">Signature stat</div>
+        <div class="v">5 titles in 7 years — Juan Manuel Fangio, three constructors</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="era" data-accent="#4E8F3A" data-tag="1960–69">
+  <div class="era-inner">
+    <div class="era-head">
+      <div class="era-range">60s</div>
+      <h2>The Engine Moves Behind the Driver</h2>
+    </div>
+    <div class="era-body">
+      <ul class="era-facts">
+        <li>Cooper's rear/mid-engined cars made the front-engined grid obsolete almost overnight, winning back-to-back titles in 1959 and 1960.</li>
+        <li>Jim Clark and Lotus redefined how fast — and how elegantly — a Grand Prix car could be driven, taking titles in 1963 and 1965.</li>
+        <li>Jack Brabham became the only driver ever to win a championship in a car bearing his own name, in a Brabham BT19, in 1966.</li>
+        <li>Sponsorship arrived in 1968, when Lotus swapped British Racing Green for Gold Leaf livery — the grid's first fully commercial paint job.</li>
+      </ul>
+      <div class="stat-block">
+        <div class="k">Turning point</div>
+        <div class="v">1968 — the first sponsored livery replaces national racing colours</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="era" data-accent="#C9A227" data-tag="1970–79">
+  <div class="era-inner">
+    <div class="era-head">
+      <div class="era-range">70s</div>
+      <h2>Wings, Ground Effect, and JPS Black</h2>
+    </div>
+    <div class="era-body">
+      <ul class="era-facts">
+        <li>Lotus's John Player Special black-and-gold livery, unveiled in 1972, became one of motorsport's most recognisable paint schemes on first appearance.</li>
+        <li>Jackie Stewart won three titles while campaigning hard for basic safety standards — barriers, medical cars, closed-face helmets — after losing friends on unprotected circuits.</li>
+        <li>1976 produced one of the sport's defining rivalries: James Hunt edged Niki Lauda to the title, weeks after Lauda's near-fatal fire at the Nürburgring.</li>
+        <li>The Lotus 78 and 79 introduced ground-effect aerodynamics, using the underside of the car to generate downforce and reshaping design for a generation.</li>
+      </ul>
+      <div class="stat-block">
+        <div class="k">Rivalry of the decade</div>
+        <div class="v">Hunt vs. Lauda, 1976 — decided by a single point</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="era" data-accent="#E2231A" data-tag="1980–89">
+  <div class="era-inner">
+    <div class="era-head">
+      <div class="era-range">80s</div>
+      <h2>Turbos, and Over 1,000 Horsepower</h2>
+    </div>
+    <div class="era-body">
+      <ul class="era-facts">
+        <li>Qualifying-spec turbo engines reportedly exceeded 1,000 horsepower by the mid-1980s, before turbocharging was banned outright for 1989.</li>
+        <li>Alain Prost and Ayrton Senna became McLaren teammates in 1988 and won 15 of 16 races between them — still one of the most dominant single-season campaigns in the sport's history.</li>
+        <li>Nelson Piquet and Nigel Mansell carried the Williams-Honda flag through a decade defined as much by engine wars as driver rivalries.</li>
+      </ul>
+      <div class="stat-block">
+        <div class="k">Signature stat</div>
+        <div class="v">15 of 16 — McLaren's win share in 1988</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="era" data-accent="#C6A15B" data-tag="1990–99">
+  <div class="era-inner">
+    <div class="era-head">
+      <div class="era-range">90s</div>
+      <h2>Safety, Reformed</h2>
+    </div>
+    <div class="era-body">
+      <ul class="era-facts">
+        <li>Ayrton Senna's death at Imola in 1994 forced the sport's most significant safety reckoning, leading to slower cars, softer circuits, and the FIA's modern safety framework.</li>
+        <li>Michael Schumacher won back-to-back titles with Benetton in 1994 and 1995 — the opening chapter of a career that would reshape the record books.</li>
+        <li>Williams fielded the decade's dominant car, taking titles with Mansell (1992), Prost (1993), Hill (1996) and Villeneuve (1997).</li>
+        <li>Active suspension, traction control and other driver aids were banned for 1994 as part of the safety response.</li>
+      </ul>
+      <div class="stat-block">
+        <div class="k">Turning point</div>
+        <div class="v">1994 — Imola reshapes safety regulation for good</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="era" data-accent="#D40000" data-tag="2000–09">
+  <div class="era-inner">
+    <div class="era-head">
+      <div class="era-range">00s</div>
+      <h2>Ferrari, Red, Everywhere</h2>
+    </div>
+    <div class="era-body">
+      <ul class="era-facts">
+        <li>Michael Schumacher and Ferrari won five consecutive drivers' and constructors' titles from 2000 to 2004 — still the sport's longest championship streak.</li>
+        <li>Fernando Alonso ended that run with back-to-back titles for Renault in 2005 and 2006, becoming the youngest champion at the time.</li>
+        <li>Lewis Hamilton arrived in 2007, narrowly missed the title as a rookie, then won it the following year at 23 — then the youngest champion ever.</li>
+        <li>Brawn GP, assembled from Honda's abandoned team just months earlier, won both championships in 2009 — one of the sport's great underdog stories.</li>
+      </ul>
+      <div class="stat-block">
+        <div class="k">Signature stat</div>
+        <div class="v">5 straight titles — Schumacher &amp; Ferrari, 2000–2004</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="era" data-accent="#00A19C" data-tag="2010–19">
+  <div class="era-inner">
+    <div class="era-head">
+      <div class="era-range">10s</div>
+      <h2>The Hybrid Era Begins</h2>
+    </div>
+    <div class="era-body">
+      <ul class="era-facts">
+        <li>Sebastian Vettel and Red Bull won four consecutive titles from 2010–2013; Vettel became the youngest champion in history in 2010, at 23 years old.</li>
+        <li>New V6 turbo-hybrid power units arrived in 2014, and Mercedes used them to launch a run of eight consecutive constructors' titles, through 2021.</li>
+        <li>Lewis Hamilton and Nico Rosberg — former karting teammates turned title rivals — fought a bitter internal Mercedes battle that Rosberg won in 2016, then immediately retired.</li>
+        <li>The Halo cockpit-protection device was introduced in 2018 and has since been credited with saving lives in several major accidents.</li>
+      </ul>
+      <div class="stat-block">
+        <div class="k">Signature stat</div>
+        <div class="v">8 straight constructors' titles — Mercedes, 2014–2021</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="era" data-accent="#FF8000" data-tag="2020–26">
+  <div class="era-inner">
+    <div class="era-head">
+      <div class="era-range">20s</div>
+      <h2>A New Era, Reset</h2>
+    </div>
+    <div class="era-body">
+      <ul class="era-facts">
+        <li>The 2021 title fight between Lewis Hamilton and Max Verstappen came down to a contested final lap in Abu Dhabi — still one of the most debated finishes in the sport's history.</li>
+        <li>Verstappen went on to win four consecutive titles, 2021–2024, before Lando Norris broke McLaren's 17-year drought in 2025, taking the title by two points over Verstappen at the season finale.</li>
+        <li>2026 opened a new technical era: a fifty-fifty electric-to-combustion power split, no MGU-H, fully sustainable fuel, and active aerodynamics on every car.</li>
+        <li>Cadillac joined as the sport's 11th team in 2026 — the first entirely new constructor since Haas in 2016 — expanding the grid to 22 cars for the first time in over a decade.</li>
+      </ul>
+      <div class="stat-block">
+        <div class="k">Where things stand</div>
+        <div class="v">2025 champion: Lando Norris, McLaren — decided by 2 points</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="records">
+  <div class="records-inner">
+    <h2>Fastest Facts</h2>
+    <p class="lede">A handful of numbers that frame the whole 76-season story.</p>
+    <div class="record-grid">
+      <div class="record-card">
+        <div class="label">Most drivers' titles</div>
+        <div class="val"><em>7</em> each — Michael Schumacher &amp; Lewis Hamilton</div>
+      </div>
+      <div class="record-card">
+        <div class="label">Youngest champion</div>
+        <div class="val">Sebastian Vettel — <em>23</em> years, 134 days (2010)</div>
+      </div>
+      <div class="record-card">
+        <div class="label">Most constructors' titles</div>
+        <div class="val">Ferrari — <em>16</em> championships</div>
+      </div>
+      <div class="record-card">
+        <div class="label">Longest team streak</div>
+        <div class="val">Mercedes — <em>8</em> consecutive constructors' titles, 2014–2021</div>
+      </div>
+      <div class="record-card">
+        <div class="label">Champions crowned</div>
+        <div class="val"><em>35</em> different drivers, 1950 through 2025</div>
+      </div>
+      <div class="record-card">
+        <div class="label">First woman on the grid</div>
+        <div class="val">Maria Teresa de Filippis — 1958 Belgian Grand Prix</div>
+      </div>
+      <div class="record-card">
+        <div class="label">Closest title fights</div>
+        <div class="val">1984 (half a point) and 2025 (2 points)</div>
+      </div>
+      <div class="record-card">
+        <div class="label">Newest constructor</div>
+        <div class="val">Cadillac — joined the grid in <em>2026</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fline">
+    Compiled from public championship records. Standings and season details for 2025–2026 reflect information available as of July 2026 and may shift as the season continues.
+  </div>
+</footer>
+
+<script>
+  const eras = document.querySelectorAll('.era');
+  const fill = document.getElementById('livery-fill');
+  const tag = document.getElementById('era-tag');
+  let current = null;
+
+  const setEra = (el) => {
+    if (!el || el === current) return;
+    current = el;
+    const accent = el.dataset.accent;
+    document.documentElement.style.setProperty('--accent', accent);
+    fill.style.background = accent;
+    tag.style.background = accent;
+    tag.textContent = el.dataset.tag;
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, { threshold: 0.15 });
+  eras.forEach(el => io.observe(el));
+
+  const io2 = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.35) {
+        setEra(entry.target);
+      }
+    });
+  }, { threshold: [0.35, 0.5, 0.65] });
+  eras.forEach(el => io2.observe(el));
+
+  setEra(eras[0]);
+
+  const onScroll = () => {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const height = h.scrollHeight - h.clientHeight;
+    const pct = height > 0 ? (scrolled / height) * 100 : 0;
+    fill.style.width = pct + '%';
+  };
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+</body>
+</html>
